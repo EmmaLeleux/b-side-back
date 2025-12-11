@@ -20,8 +20,14 @@ final class Playlist: Model, @unchecked Sendable, Content {
     @Field(key: "description")
     var description: String
     
+    @Field(key: "picture")
+    var picture: String
+    
     @Siblings(through: UserPlaylist.self, from: \.$playlist, to: \.$user)
     var users: [User]
+    
+    @Siblings(through: PlaylistMusique.self, from: \.$playlist, to: \.$musique)
+    var musiques: [Musique]
     
     
     init() {}
@@ -30,7 +36,9 @@ final class Playlist: Model, @unchecked Sendable, Content {
         return PlaylistResponseDTO(
             id: id ?? UUID(),
             name: name,
-            description: description
+            description: description,
+            picture : picture,
+            musiques : musiques.map{$0.toDTO()}
         )
     }
     

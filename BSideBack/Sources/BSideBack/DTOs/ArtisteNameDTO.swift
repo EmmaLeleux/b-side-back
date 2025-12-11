@@ -11,12 +11,12 @@ import Vapor
 
 struct CreateArtisteNameDTO: Content{
     var name: String
-    
+    var artistId: UUID
     
     func toModel() -> ArtisteName {
         let model = ArtisteName()
         model.name = name
-        
+        model.$artiste.id = artistId
         return model
     }
 }

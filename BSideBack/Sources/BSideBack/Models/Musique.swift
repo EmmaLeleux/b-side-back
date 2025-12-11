@@ -22,6 +22,9 @@ final class Musique: Model, @unchecked Sendable, Content {
     
     @Siblings(through: ArtisteMusique.self, from: \.$musique, to: \.$artiste)
     var artists: [Artiste]
+    
+    @Siblings(through: PlaylistMusique.self, from: \.$musique, to: \.$playlist)
+    var playlists: [Playlist]
 
     init() {}
     

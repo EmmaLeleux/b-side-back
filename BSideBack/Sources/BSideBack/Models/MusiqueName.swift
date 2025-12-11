@@ -22,6 +22,12 @@ final class MusiqueName: Model, @unchecked Sendable, Content {
     
     init() {}
     
+    init(id: UUID? = nil, name: String, musiqueId: UUID) {
+            self.id = id
+            self.name = name
+            self.$musique.id = musiqueId
+        }
+    
     func toDTO() -> MusiqueNameResponseDTO {
         return MusiqueNameResponseDTO(
             id: id ?? UUID(),
