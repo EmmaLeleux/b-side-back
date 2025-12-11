@@ -17,6 +17,10 @@ final class Artiste: Model, @unchecked Sendable, Content {
     @Children(for: \.$artiste)
     var names: [ArtisteName]
     
+    @Siblings(through: ArtisteMusique.self, from: \.$artiste, to: \.$musique)
+    var musics: [Musique]
+
+    
     
     init() {}
     

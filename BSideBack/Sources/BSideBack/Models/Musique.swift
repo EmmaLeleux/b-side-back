@@ -20,13 +20,17 @@ final class Musique: Model, @unchecked Sendable, Content {
     @Children(for: \.$musique)
     var names: [MusiqueName]
     
+    @Siblings(through: ArtisteMusique.self, from: \.$musique, to: \.$artiste)
+    var artists: [Artiste]
+
     init() {}
     
     func toDTO() -> MusiqueResponseDTO {
         return MusiqueResponseDTO(
             id: id ?? UUID(),
             son: son,
-            names: names.map{$0.toDTO()}
+            names: names.map{$0.toDTO()},
+            artistes: artists.map{$0.toDTO()}
         )
     }
     
