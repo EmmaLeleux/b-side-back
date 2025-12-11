@@ -14,7 +14,7 @@ struct SeedBadges: AsyncMigration {
         
         let badge2 = CreateBadgeDTO(name: "Champion", picture: "https://i.ibb.co/NgtymQf4/Chamion.png", nbMoney: 3000).toModel()
         let badge3 = CreateBadgeDTO(name: "Novice", picture: "https://i.ibb.co/wh9mSR9Z/Novice.png", nbMoney: 100).toModel()
-        let badge4 = CreateBadgeDTO(name: "Tigre", picture: "https://i.ibb.co/jknjxmx0/badge-Mozart.png", nbMoney: 4000).toModel()
+        let badge4 = CreateBadgeDTO(name: "Tigre", picture: "https://i.ibb.co/GQSP0YcM/Frame-11.png", nbMoney: 4000).toModel()
         
         try await badge1.save(on: database)
         try await badge2.save(on: database)

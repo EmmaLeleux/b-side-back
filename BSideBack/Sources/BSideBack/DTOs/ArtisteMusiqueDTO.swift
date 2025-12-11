@@ -9,14 +9,14 @@ import Fluent
 import Vapor
 
 
-struct ArtisteMusiqueBadgeDTO: Content{
+struct CreateArtisteMusiqueDTO: Content{
     var artisteId: UUID
     var musiqueId: UUID
     
     func toModel() -> ArtisteMusique {
         let model = ArtisteMusique()
-        model.artiste.id = artisteId
-        model.musique.id = musiqueId
+        model.$artiste.id = artisteId
+        model.$musique.id = musiqueId
         return model
     }
 }

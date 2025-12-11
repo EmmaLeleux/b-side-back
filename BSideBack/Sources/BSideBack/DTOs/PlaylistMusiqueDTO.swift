@@ -15,8 +15,8 @@ struct CreatePlaylistMusiqueDTO: Content{
     
     func toModel() -> PlaylistMusique {
         let model = PlaylistMusique()
-        model.playlist.id = playlistId
-        model.musique.id = musiqueId
+        model.$playlist.id = playlistId
+        model.$musique.id = musiqueId
         return model
     }
 }

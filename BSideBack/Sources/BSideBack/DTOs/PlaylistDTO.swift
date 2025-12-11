@@ -12,13 +12,13 @@ import Vapor
 struct CreatePlaylistDTO: Content{
     var name: String
     var description: String
-    
+    var picture: String
     
     func toModel() -> Playlist {
         let model = Playlist()
         model.name = name
         model.description = description
-        
+        model.picture = picture
         return model
     }
 }
@@ -32,4 +32,6 @@ struct PlaylistResponseDTO: Content{
     var id: UUID
     var name: String
     var description: String
+    var picture: String
+    var musiques: [MusiqueResponseDTO]
 }
