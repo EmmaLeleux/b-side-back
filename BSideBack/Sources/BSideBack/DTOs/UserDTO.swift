@@ -18,6 +18,7 @@ struct CreateUserDTO: Content{
         model.username = username
         model.password = password
         model.money = 0
+        model.picture = picture
         return model
     }
 }
