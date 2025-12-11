@@ -9,7 +9,7 @@ import Fluent
 import Vapor
 
 
-struct PlaylistMusiqueBadgeDTO: Content{
+struct CreatePlaylistMusiqueDTO: Content{
     var playlistId: UUID
     var musiqueId: UUID
     

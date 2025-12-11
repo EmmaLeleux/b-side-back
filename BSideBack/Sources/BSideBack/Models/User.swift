@@ -41,7 +41,9 @@ final class User: Model, @unchecked Sendable, Content {
             id: id ?? UUID(),
             username: username,
             money: money,
-            picture: picture
+            picture: picture,
+            playlists: playlists.map{$0.toDTO()},
+            badges: badges.map{$0.toDTO()}
         )
     }
 }

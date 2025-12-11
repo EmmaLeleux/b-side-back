@@ -6,6 +6,7 @@
 //
 
 import Fluent
+import Foundation
 
 struct SeedPlaylist: AsyncMigration {
     func prepare(on database: any Database) async throws {
@@ -38,7 +39,16 @@ struct SeedPlaylist: AsyncMigration {
         try await playlist11.save(on: database)
         try await playlist12.save(on: database)
         try await playlist13.save(on: database)
+        
+        
+        let musique1 = CreateMusiqueDTO(son: "https://drive.google.com/uc?export=download&id=1aUre9slWWpj4x7EGhOqCCSfXb55kl0bN").toModel()
+        
+        try await musique1.save(on: database)
+        
+        let tableInter1 = CreatePlaylistMusiqueDTO(playlistId: playlist10.id ?? UUID(), musiqueId: musique1.id ?? UUID()).toModel()
        
+        
+        try await tableInter1.save(on: database)
     }
     
     func revert(on database: any Database) async throws {
