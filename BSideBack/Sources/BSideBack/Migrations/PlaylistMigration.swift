@@ -12,6 +12,7 @@ struct PlaylistMigration : AsyncMigration {
         try await database.schema("playlist")
             .id()
             .field("name", .string, .required)
+            .field("descirption", .string, .required)
             
             .create()
     }
