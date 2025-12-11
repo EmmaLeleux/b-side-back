@@ -29,6 +29,7 @@ struct ArtistController: RouteCollection {
             throw Abort(.notFound)
         }
         
+        try await artist.$names.load(on: req.db)
         return artist.toDTO()
     }
     

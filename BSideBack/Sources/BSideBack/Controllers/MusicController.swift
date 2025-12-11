@@ -29,6 +29,12 @@ struct MusicController: RouteCollection {
             throw Abort(.notFound)
         }
         
+        try await music.$names.load(on: req.db)
+                try await music.$artists.load(on: req.db)
+                
+                for artiste in music.artists {
+                    try await artiste.$names.load(on: req.db)
+                }
         return music.toDTO()
     }
     

@@ -17,6 +17,7 @@ struct CreateUserDTO: Content{
         let model = User()
         model.username = username
         model.password = password
+        model.picture = picture
         model.money = 0
         model.picture = picture
         return model

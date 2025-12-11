@@ -23,9 +23,24 @@ struct PlaylistController: RouteCollection {
     
     //récuérer toutes les playlists
     @Sendable
-    func getAllPlaylists(_ req: Request) async throws -> [Playlist]{
+    func getAllPlaylists(_ req: Request) async throws -> [PlaylistResponseDTO]{
         try req.auth.require(UserPayload.self)
-        return try await Playlist.query(on: req.db).all()
+        let playlists = try await Playlist.query(on: req.db).all()
+        
+        for playlist in playlists {
+                    try await playlist.$musiques.load(on: req.db)
+                    
+                    for musique in playlist.musiques {
+                        try await musique.$names.load(on: req.db)
+                        try await musique.$artists.load(on: req.db)
+                        
+                        for artiste in musique.artists {
+                            try await artiste.$names.load(on: req.db)
+                        }
+                    }
+                }
+                
+                return playlists.map { $0.toDTO() }
     }
 
     
@@ -38,6 +53,16 @@ struct PlaylistController: RouteCollection {
             throw Abort(.notFound)
         }
         
+        try await playlist.$musiques.load(on: req.db)
+                
+                for musique in playlist.musiques {
+                    try await musique.$names.load(on: req.db)
+                    try await musique.$artists.load(on: req.db)
+                    
+                    for artiste in musique.artists {
+                        try await artiste.$names.load(on: req.db)
+                    }
+                }
         return playlist.toDTO()
     }
     

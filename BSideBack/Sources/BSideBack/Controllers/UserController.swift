@@ -46,6 +46,24 @@ struct UserController: RouteCollection {
             throw Abort(.notFound, reason: "User not found")
         }
         
+        try await user.$playlists.load(on: req.db)
+            try await user.$badges.load(on: req.db)
+            
+            
+            for playlist in user.playlists {
+                try await playlist.$musiques.load(on: req.db)
+                
+                
+                for musique in playlist.musiques {
+                    try await musique.$names.load(on: req.db)
+                    try await musique.$artists.load(on: req.db)
+                    
+                  
+                    for artiste in musique.artists {
+                        try await artiste.$names.load(on: req.db)
+                    }
+                }
+            }
         return user.toDTO()
     }
     
@@ -56,7 +74,6 @@ struct UserController: RouteCollection {
         user.password = try Bcrypt.hash(user.password)
         
         let existing = try await User.query(on: req.db)
-        
             .filter(\.$username == user.username)
             .first()
         if existing != nil {
@@ -64,6 +81,10 @@ struct UserController: RouteCollection {
         }
         
         try await user.save(on: req.db)
+        
+        // Charger les relations (vides pour un nouvel utilisateur)
+        try await user.$playlists.load(on: req.db)
+        try await user.$badges.load(on: req.db)
         
         let payload = UserPayload(id: user.id!)
         let signer = JWTSigner.hs256(key: "WelcomeToTheB-Siiiiiiiiiiiide")
@@ -84,6 +105,23 @@ struct UserController: RouteCollection {
         
         guard try Bcrypt.verify(userData.password, created: user.password) else {
             throw Abort(.unauthorized, reason: "Password incorect")
+        }
+        
+        // Charger les relations
+        try await user.$playlists.load(on: req.db)
+        try await user.$badges.load(on: req.db)
+        
+        for playlist in user.playlists {
+            try await playlist.$musiques.load(on: req.db)
+            
+            for musique in playlist.musiques {
+                try await musique.$names.load(on: req.db)
+                try await musique.$artists.load(on: req.db)
+                
+                for artiste in musique.artists {
+                    try await artiste.$names.load(on: req.db)
+                }
+            }
         }
         
         let payload = UserPayload(id: user.id!)
@@ -115,6 +153,21 @@ struct UserController: RouteCollection {
         
         try await user.save(on: req.db)
         
+        try await user.$playlists.load(on: req.db)
+            try await user.$badges.load(on: req.db)
+            
+            for playlist in user.playlists {
+                try await playlist.$musiques.load(on: req.db)
+                
+                for musique in playlist.musiques {
+                    try await musique.$names.load(on: req.db)
+                    try await musique.$artists.load(on: req.db)
+                    
+                    for artiste in musique.artists {
+                        try await artiste.$names.load(on: req.db)
+                    }
+                }
+            }
         return user.toDTO()
     }
     
