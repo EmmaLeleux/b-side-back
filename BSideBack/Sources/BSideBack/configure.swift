@@ -16,6 +16,19 @@ public func configure(_ app: Application) async throws {
         database: Environment.get("DATABASE_NAME") ?? "bSideDB"
     ), as: .mysql)
 
+    
+    let corsConfiguration = CORSMiddleware.Configuration(
+//        allowedOrigin: .custom("mettre le bon domaine"),
+        allowedOrigin: .all,
+        allowedMethods: [.GET, .POST, .PUT, .PATCH, .DELETE, .OPTIONS],
+        allowedHeaders: [.accept, .authorization, .contentType, .origin],
+        cacheExpiration: 5
+    )
+    
+    let cors = CORSMiddleware(configuration: corsConfiguration)
+    app.middleware.use(cors)
+    
+    
     app.migrations.add(UserMigration())
     app.migrations.add(PlaylistMigration())
     app.migrations.add(MusiqueMigration())
@@ -30,7 +43,7 @@ public func configure(_ app: Application) async throws {
     app.migrations.add(SeedBadges())
     app.migrations.add(SeedPlaylist())
 
-    
+    try await app.autoMigrate()
     // register routes
     try routes(app)
 }
