@@ -30,4 +30,5 @@ struct MusiqueResponseDTO: Content{
     var id: UUID
     var son: String
     var names: [MusiqueNameResponseDTO]
+    var artistes: [ArtisteResponseDTO]
 }
