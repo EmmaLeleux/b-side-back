@@ -26,8 +26,10 @@ public func configure(_ app: Application) async throws {
     )
     
     let cors = CORSMiddleware(configuration: corsConfiguration)
+    app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     app.middleware.use(cors)
-    
+  
+   
     
     app.migrations.add(UserMigration())
     app.migrations.add(PlaylistMigration())

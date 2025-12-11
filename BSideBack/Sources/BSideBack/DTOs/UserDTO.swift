@@ -32,4 +32,6 @@ struct UserResponseDTO: Content{
     var username: String
     var money: Int
     var picture: String
+    var playlists : [PlaylistResponseDTO]
+    var badges: [BadgeResponseDTO]
 }
