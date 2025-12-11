@@ -17,6 +17,9 @@ final class Playlist: Model, @unchecked Sendable, Content {
     @Field(key: "name")
     var name: String
     
+    @Field(key: "description")
+    var description: String
+    
     @Siblings(through: UserPlaylist.self, from: \.$playlist, to: \.$user)
     var users: [User]
     
@@ -26,7 +29,8 @@ final class Playlist: Model, @unchecked Sendable, Content {
     func toDTO() -> PlaylistResponseDTO {
         return PlaylistResponseDTO(
             id: id ?? UUID(),
-            name: name
+            name: name,
+            description: description
         )
     }
     
