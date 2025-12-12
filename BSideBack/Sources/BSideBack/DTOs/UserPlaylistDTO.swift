@@ -10,12 +10,10 @@ import Vapor
 
 
 struct CreateUserPlaylistDTO: Content{
-    var userId: UUID
     var playlistId: UUID
     
     func toModel() -> UserPlaylist {
         let model = UserPlaylist()
-        model.user.id = userId
         model.playlist.id = playlistId
         return model
     }

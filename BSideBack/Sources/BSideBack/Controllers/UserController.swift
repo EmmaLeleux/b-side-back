@@ -27,6 +27,7 @@ struct UserController: RouteCollection {
         protectedRoutes.patch(use: self.updateUser)
         protectedRoutes.delete(use: deleteUser)
         protectedRoutes.get("me", use: getMyUser)
+        protectedRoutes.post("badge", use: addBadgeToUser)
     
         
         
@@ -66,6 +67,43 @@ struct UserController: RouteCollection {
             }
         return user.toDTO()
     }
+    
+    @Sendable
+    func addBadgeToUser(_ req: Request) async throws -> UserResponseDTO{
+        let payload = try req.auth.require(UserPayload.self)
+        
+        let dto = try req.content.decode(CreateUserBadgeDTO.self)
+            
+            let playlistToAdd = UserBadge()
+            playlistToAdd.$user.id = payload.id
+        playlistToAdd.$badge.id = dto.badgeId
+            
+            try await playlistToAdd.save(on: req.db)
+        
+        guard let user = try await User.find(payload.id, on: req.db) else {
+            throw Abort(.notFound, reason: "User not found")
+        }
+        
+        try await user.$playlists.load(on: req.db)
+           try await user.$badges.load(on: req.db)
+           
+           for playlist in user.playlists {
+               try await playlist.$musiques.load(on: req.db)
+               
+               for musique in playlist.musiques {
+                   try await musique.$names.load(on: req.db)
+                   try await musique.$artists.load(on: req.db)
+                   
+                   for artiste in musique.artists {
+                       try await artiste.$names.load(on: req.db)
+                   }
+               }
+           }
+        
+        return user.toDTO()
+    }
+    
+    
     
     @Sendable
     func createUser(req: Request) async throws -> LoginResponse {
